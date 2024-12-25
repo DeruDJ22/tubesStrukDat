@@ -39,7 +39,6 @@ void addEdge(graph &G, string startVertexID, string endVertexID, int weight);
 void buildGraph(graph &G);
 void findShortestPath(graph &G, string startVertexID, string endVertexID);
 void printGraph(graph &G);
-string findMostVisitedNode(graph &G);
 void findAlternativePath(graph &G, string startVertexID, string endVertexID, string blockedVertex);
 
 #endif

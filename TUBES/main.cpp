@@ -1,94 +1,118 @@
 #include "graph.h"
 
+void initializeDummyData(graph &G) {
+    addVertex(G, "Mondstat");
+    addVertex(G, "Liyue");
+    addVertex(G, "Inazuma");
+    addVertex(G, "Sumeru");
+    addVertex(G, "Fontaine");
+    addVertex(G, "Natlan");
+    addVertex(G, "Dragonspine");
+    addVertex(G, "Qiaoying Village");
+    addVertex(G, "Chasm");
+    addVertex(G, "Enkanomiya");
+    addVertex(G, "Snezhnaya");
+
+    addEdge(G, "Mondstat", "Dragonspine", 800);
+    addEdge(G, "Mondstat", "Snezhnaya", 4000);
+
+    addEdge(G, "Dragonspine", "Liyue", 1000);
+
+    addEdge(G, "Liyue", "Chasm", 1400);
+    addEdge(G, "Liyue", "Inazuma", 3000);
+    addEdge(G, "Liyue", "Qiaoying Village", 2500);
+
+    addEdge(G, "Chasm", "Sumeru", 800);
+
+    addEdge(G, "Sumeru", "Natlan", 1000);
+    addEdge(G, "Sumeru", "Fontaine", 2700);
+    
+    addEdge(G, "Natlan", "Snezhnaya", 6000);
+
+    addEdge(G, "Fontaine", "Qiaoying Village", 800);
+    addEdge(G, "Fontaine", "Snezhnaya", 1500);
+
+    addEdge(G, "Snezhnaya", "Fontaine", 1500);
+    addEdge(G, "Snezhnaya", "Qiaoying Village", 2500);
+
+    addEdge(G, "Enkanomiya", "Inazuma", 400);
+}
+
 void displayMenu() {
     cout << "Menu:" << endl;
-    cout << "1. Tambah Kota\n";
+    cout << "1. Tambah Kota" << endl;
     cout << "2. Tambah Jalan Antar Kota" << endl;
     cout << "3. Tampilkan Graf Kota" << endl;
     cout << "4. Cari Jalur Terpendek" << endl;
     cout << "5. Cari Jalur Alternatif" << endl;
-    cout << "6. Tampilkan Kota yang Paling Sering Dilewati" << endl;
-    cout << "7. Keluar" << endl;
+    cout << "6. Keluar" << endl;
     cout << "Masukkan pilihan: ";
 }
 
 int main() {
     graph G;
-    
-    int pilihan;
-    do {
-        displayMenu();
-        cin >> pilihan;
+    initGraph(G);
+    initializeDummyData(G);
 
-        switch (pilihan) {
+    int choice;
+    string startVertexID, endVertexID, blockedVertex;
+
+    while (true) {
+        displayMenu();
+        cin >> choice;
+        cin.ignore();
+
+        switch (choice) {
             case 1: {
-                string kota;
-                cout << "Masukkan nama kota (ketik '.' untuk selesai): " ;
-                while (true) {
-                    cin >> kota;
-                    if (kota == ".") break;
-                    addVertex(G, kota);
-                    cout << "Kota " << kota << " berhasil ditambahkan" << endl;
-                    cout << "Masukkan nama kota (ketik '.' untuk selesai): " ;
-                }
+                string newVertexID;
+                cout << "Masukkan nama kota: ";
+                getline(cin, newVertexID);
+                addVertex(G, newVertexID);
+                cout << "Kota " << newVertexID << " telah ditambahkan." << endl;
                 break;
             }
             case 2: {
-                string asal, tujuan;
-                int jarak;
-                cout << "Masukkan jalan antar kota (ketik '.' untuk selesai): " << endl;
-                while (true) {
-                    cout << "Masukkan kota asal (ketik '.' untuk selesai): ";
-                    cin >> asal;
-                    if (asal == ".") break;
-
-                    cout << "Masukkan kota tujuan: ";
-                    cin >> tujuan;
-
-                    cout << "Masukkan jarak: ";
-                    cin >> jarak;
-
-                    addEdge(G, asal, tujuan, jarak);
-                    cout << "Jalan dari " << asal << " ke " << tujuan << " dengan jarak " << jarak << " berhasil ditambahkan." << endl;
-                }
+                string startVertexID, endVertexID;
+                int weight;
+                cout << "Masukkan nama kota asal: ";
+                getline(cin, startVertexID);
+                cout << "Masukkan nama kota tujuan: ";
+                getline(cin, endVertexID);
+                cout << "Masukkan jarak antar kota (km): ";
+                cin >> weight;
+                addEdge(G, startVertexID, endVertexID, weight);
+                cout << "Jalan antar " << startVertexID << " dan " << endVertexID << " telah ditambahkan." << endl;
                 break;
             }
             case 3: {
-                cout << "\nGraf kota: \n";
                 printGraph(G);
                 break;
             }
             case 4: {
-                string start, end;
-                cout << "Masukkan kota awal: ";
-                cin >> start;
+                cout << "Masukkan kota asal: ";
+                getline(cin, startVertexID);
                 cout << "Masukkan kota tujuan: ";
-                cin >> end;
-                findShortestPath(G, start, end);
+                getline(cin, endVertexID);
+                findShortestPath(G, startVertexID, endVertexID);
                 break;
             }
             case 5: {
-                string start, end, blocked;
-                cout << "Masukkan kota awal: ";
-                cin >> start;
+                cout << "Masukkan kota asal: ";
+                getline(cin, startVertexID);
                 cout << "Masukkan kota tujuan: ";
-                cin >> end;
-                cout << "Masukkan kota yang diblokir: ";
-                cin >> blocked;
-                findAlternativePath(G, start, end, blocked);
+                getline(cin, endVertexID);
+                cout << "Masukkan nama kota yang akan diblokir: ";
+                getline(cin, blockedVertex);
+                findAlternativePath(G, startVertexID, endVertexID, blockedVertex);
                 break;
             }
             case 6: {
-                cout << "\nKota yang paling sering dilewati: " << findMostVisitedNode(G) << endl;
-                break;
+                cout << "Terima kasih! Sampai jumpa!" << endl;
+                return 0;
             }
-            case 7:
-                cout << "Keluar dari program.\n";
-                break;
             default:
-                cout << "Pilihan tidak valid! Silakan coba lagi.\n";
+                cout << "Pilihan tidak valid. Coba lagi." << endl;
         }
-    } while (pilihan != 7);
-
+    }
     return 0;
 }

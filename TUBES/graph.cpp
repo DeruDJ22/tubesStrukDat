@@ -40,7 +40,6 @@ void addEdge(graph &G, string startVertexID, string endVertexID, int weight) {
         nextEdge(newEdge) = firstEdge(start);
         firstEdge(start) = newEdge;
 
-        // Add reverse edge for undirected graph
         newEdge = new edge;
         destEdge(newEdge) = startVertexID;
         weightEdge(newEdge) = weight;
@@ -181,45 +180,6 @@ void findShortestPath(graph &G, string startVertexID, string endVertexID) {
     }
 }
 
-string findMostVisitedNode(graph &G) {
-    const int MAX = 100;
-    int edgeCount[MAX] = {0};
-    string vertices[MAX];
-    int vertexCount = 0;
-
-    adrVertex temp = firstVertex(G);
-    while (temp != NULL) {
-        vertices[vertexCount++] = infoVertex(temp);
-        temp = nextVertex(temp);
-    }
-
-    temp = firstVertex(G);
-    while (temp != NULL) {
-        adrEdge edgeTemp = firstEdge(temp);
-        while (edgeTemp != NULL) {
-            for (int i = 0; i < vertexCount; i++) {
-                if (vertices[i] == destEdge(edgeTemp)) {
-                    edgeCount[i]++;
-                    break;
-                }
-            }
-            edgeTemp = nextEdge(edgeTemp);
-        }
-        temp = nextVertex(temp);
-    }
-
-    int maxCount = -1;
-    string mostVisited;
-    for (int i = 0; i < vertexCount; i++) {
-        if (edgeCount[i] > maxCount) {
-            maxCount = edgeCount[i];
-            mostVisited = vertices[i];
-        }
-    }
-
-    return mostVisited;
-}
-
 void findAlternativePath(graph &G, string startVertexID, string endVertexID, string blockedVertex) {
     const int MAX = 100;
     const int INF = 1e9;
@@ -269,7 +229,6 @@ void findAlternativePath(graph &G, string startVertexID, string endVertexID, str
         temp = nextVertex(temp);
     }
 
-    // Jalankan logika mirip dengan findShortestPath
     int dist[MAX], prev[MAX];
     bool visited[MAX] = {false};
     for (int i = 0; i < vertexCount; i++) {
