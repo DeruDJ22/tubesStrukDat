@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1735205478 source:d:\telkom\coding\cpp\codeblock\testing\graph.cpp
+	"graph.h"
+
+1735205223 d:\telkom\coding\cpp\codeblock\testing\graph.h
+	<iostream>
+
+1735206803 source:d:\telkom\coding\cpp\codeblock\testing\main.cpp
+	"graph.h"
+
